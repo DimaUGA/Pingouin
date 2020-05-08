@@ -7,10 +7,6 @@ public class Modele_Pingouin {
     Point coordonees;
     int id_pingouin;
 
-    public Modele_Pingouin(int id){
-      id_pingouin = id;
-    }
-
     public Modele_Pingouin(int id, Point pos){
       id_pingouin = id;
       coordonees = pos;

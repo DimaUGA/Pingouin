@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Modele_plateau /*extends AbstractTableModel*/ {
 
-	private int[][] monplateau;
+  private int[][] monplateau;
   private Random mod_alea = new Random();
   private int colonne;
   private int ligne;
@@ -73,37 +73,37 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 	}
 
 	public boolean Est_accessible(Point p) { //Vérifie si le point est accessible
-		return (int)p.getX() < 8 && (int)p.getX() >= 0 && (int)p.getY() < 16 && (int)p.getY() >= 0
-				&& this.getValeurCase(p) != 0
+		return (int)p.getX() < 16 && (int)p.getX() >= 0 && (int)p.getY() < 8 && (int)p.getY() >= 0
+				&& this.getValeurCase(new Point((int)p.getX(), (int)p.getY())) != 0
 				&& !ContientPingouin(p,joueurs);
 	}
 
 	public void Jouer_coup(Modele_Joueur joueur, int id_pingouin, Point pArr){ // A coder apres la classe Joueur
 		Point coordoneesCourante = joueur.getPingouin(id_pingouin).getCoordonees();
 		joueur.ajout_score(getValeurCase(coordoneesCourante));
-		monplateau[(int)coordoneesCourante.getX()][(int)coordoneesCourante.getY()] = 0;
+		monplateau[(int)coordoneesCourante.getY()][(int)coordoneesCourante.getX()] = 0;
 		joueur.deplacer_pingouin(id_pingouin,pArr);
 	}
 
 	public ArrayList<Point> Remplir_liste_voisin(ArrayList<Point> liste,Point p, int mult_x, int mult_y){
 		int x = (int)p.getX();
 		int y = (int)p.getY();
-		for ( int i = 1; Est_accessible(new Point(x+(i*mult_x), y+(i*mult_y))); i++){
-			liste.add(new Point(x+i,y+i));
+		int temp = 0;
+		if(mult_y == 0 && y%2 == 0) temp = 1;
+		for ( int i = 1 + temp; Est_accessible(new Point(x+(i*mult_x), y+(i*mult_y))); i++){
+			liste.add(new Point(x+(i*mult_x),y+(i*mult_y)));
 		}
 		return liste;
 	}
 
 	public ArrayList<Point> Accessible(Point p){ //Renvoi la liste des points accessibles depuis le point p
 		ArrayList<Point> liste_voisin = new ArrayList<>();
-
-		Remplir_liste_voisin(liste_voisin,p,-1,-1);
-		Remplir_liste_voisin(liste_voisin,p,1,-1);
-		Remplir_liste_voisin(liste_voisin,p,-2,0);
-		Remplir_liste_voisin(liste_voisin,p,2,0);
-		Remplir_liste_voisin(liste_voisin,p,-1,1);
-		Remplir_liste_voisin(liste_voisin,p,1,1);
-
+		liste_voisin = Remplir_liste_voisin(liste_voisin,p,-1,-1);
+		liste_voisin = Remplir_liste_voisin(liste_voisin,p,1,-1);
+		liste_voisin = Remplir_liste_voisin(liste_voisin,p,-1,1);
+		liste_voisin = Remplir_liste_voisin(liste_voisin,p,1,1);
+		liste_voisin = Remplir_liste_voisin(liste_voisin,p,-2,0);
+		liste_voisin = Remplir_liste_voisin(liste_voisin,p,2,0);
 		return liste_voisin;
 	}
 
@@ -112,7 +112,7 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 	}
 
     public int getValeurCase(Point p) {
-    	return this.monplateau[(int)p.getX()][(int)p.getY()];
+    	return this.monplateau[(int)p.getY()][(int)p.getX()];
     }
 
 	public int getColonne() {

@@ -14,11 +14,25 @@ public class Modele_Joueur {
         nbDePingouinPose = 0;
         this.score=0;
         Pingouins = new ArrayList<>();
+        initListePingouin(2);
     }
 
+    public void initListePingouin(int nbPingouin){
+        for(int i = 0; i < nbPingouin; i++)
+            Pingouins.add(new Modele_Pingouin(nbPingouin * id_joueur, new Point(-1,-1)));
+    }
 
     public void deplacer_pingouin(int id_pingouin, Point destination){
         Pingouins.get(id_pingouin).setCoordonees(destination);
+    }
+
+    public int estPingouin(Point pos){
+        int i = 0;
+        for(Modele_Pingouin p : Pingouins){
+            if(p.getCoordonees().getX() == pos.getX() && p.getCoordonees().getY() == pos.getY()) return i;
+            i++;
+        }
+        return -1;
     }
 
     public void ajout_score(int valeur){
@@ -61,15 +75,12 @@ public class Modele_Joueur {
         Pingouins = pingouins;
     }
 
-    // Ajout des pingouins pour initialisation
-   public void ajouterPingouin (int nombre, int ID){
-      for(int i = 0; i< nombre; i++){
-        Pingouins.add(new Modele_Pingouin(ID));
-      }
-    }
-
     public int getNbPingouinPose(){
       return nbDePingouinPose;
+    }
+
+    public boolean initialisation(){
+        return  nbDePingouinPose != Pingouins.size();
     }
 
     public void posePingouin (Point coordonees){
