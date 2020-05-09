@@ -108,14 +108,6 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		liste_voisin = Remplir_liste_voisin(liste_voisin,p,2,0);
 		return liste_voisin;
 	}
-
-	public Map<Integer,Map<String,Point>> getJoueurHashmap() {
-		Map<Integer,Map<String,Point>> tmp = new HashMap<Integer,Map<String,Point>>();
-    	for (Modele_Joueur j : joueurs) {
-			tmp.put(j.id_joueur, j.getPingouinHashmap());
-		}
-    	return tmp;
-	}
 	
 	public ArrayList<Modele_Joueur> getPosition_Joueur() {
 		return joueurs;

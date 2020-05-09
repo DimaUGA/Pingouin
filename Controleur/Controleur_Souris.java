@@ -29,14 +29,20 @@ public class Controleur_Souris{
 
     void deplacementPingouin(Point p){
         //Est Accessible ne gere que diagonale basse a regler + ne prend pas en compte les cases vides
-        if(this.mp.Contient(p, this.mp.Accessible(new Point(departX, departY)))){
-        	this.mp.Jouer_coup(this.mp.getJoueurs().get(joueurcourant), numPingouinCourant, p);
-        	jeuEnCours.setPlateau(this.mp);
-            jeuEnCours.repaint();
-            pingouinSelectionne = false;
-            this.nbCoup++;
-            this.joueurcourant = nbCoup%this.mp.getJoueurs().size();
-        }
+	    /*
+    	//if ( cest le tour de l'ia ){
+    		X = simulercoup
+    		jouercoup(ia,X.a,X.b);
+    		else()if(le truc d'en dessous
+    	*/
+    		if(this.mp.Contient(p, this.mp.Accessible(new Point(departX, departY)))){
+	        	this.mp.Jouer_coup(this.mp.getJoueurs().get(joueurcourant), numPingouinCourant, p);
+	        	jeuEnCours.setPlateau(this.mp);
+	            jeuEnCours.repaint();
+	            pingouinSelectionne = false;
+	            this.nbCoup++;
+	            this.joueurcourant = nbCoup%this.mp.getJoueurs().size();
+	        }
     }
 
     void selectionPingouin(Point p){

@@ -81,15 +81,6 @@ public abstract class Modele_Joueur_abs {
 	    public int getNbPingouinPose(){
 	      return nbDePingouinPose;
 	    }
-
-	    public Map<String,Point> getPingouinHashmap() {
-	    	Map<String,Point> tmp = new HashMap<String, Point>();
-	    	
-	    	for (Modele_Pingouin pingouin : Pingouins) {
-				tmp.put(String.valueOf(pingouin.id_pingouin), pingouin.coordonees);
-			}
-	    	return tmp;
-	    }
 	    
 	    public boolean initialisation(){
 	        return  nbDePingouinPose != Pingouins.size();

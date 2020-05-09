@@ -18,7 +18,4 @@ public class Modele_Jeu{
     public void setPlateau(Modele_plateau plateau) {
         this.plateau = plateau;
     }
-    public Map<Integer,Map<String,Point>> getPlateauPingouinHashmap(){
-    	return plateau.getJoueurHashmap();
-    }
 }
