@@ -2,41 +2,23 @@ package Vue;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseListener;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import Controleur.Controleur_Souris;
 import Modele.*;
 
 public class Vue_Jeu extends JComponent {
-
-	private JFrame frame;
-	private JTable table;
-
+	
 	JFrame fenetre = new JFrame("Hey ! That's my fish");
-	Modele_Jeu jeu;
-	int comp = 0;
 	Image un_poisson, deux_poissons, trois_poissons;
 	ArrayList <Image> pingouinImage;
-	Modele_Joueur joueur_courant;
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { Vue_Jeu window = new Vue_Jeu();
-	 * window.frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); }
-	 * } }); }
-	 */
-	/**
-	 * Create the application.
-	 */
-
-	public Vue_Jeu(Modele_Jeu j) {
-		this.jeu = j;
+	Modele_plateau plateau ;
+	
+	public Vue_Jeu() {
 		pingouinImage = new ArrayList<>();
 		chargerImage();
 		fenetre.add(this);
@@ -52,6 +34,9 @@ public class Vue_Jeu extends JComponent {
 		return fenetre;
 	}
 
+	public void setPlateau(Modele_plateau mp) {
+		this.plateau = mp ;
+	}
 
 	void chargerImage() {
 		InputStream temp1 = ClassLoader.getSystemClassLoader().getResourceAsStream("un_poisson.png");
@@ -79,36 +64,20 @@ public class Vue_Jeu extends JComponent {
 			System.exit(1);
 		 }
 	}
-
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	/*
-	 * private void initialize() { frame = new JFrame(); frame.setBounds(100, 100,
-	 * 450, 300); frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	 * frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-	 *
-	 * table = new JTable(); table.setModel(new DefaultTableModel(new Object[][] { {
-	 * null, null }, { null, null }, }, new String[] { "New column", "New column"
-	 * })); frame.getContentPane().add(table); }
-	 */
-
-	 public Modele_Joueur getJoueurCourant(){
-		 return joueur_courant;
+	
+	 void afficher_plateau_complet(Graphics2D dessin) {
+		 afficher_plateau(dessin);
+		 affiche_pingouin(dessin);
 	 }
-
-	 public Modele_Jeu getJeu(){
-		 return jeu;
-	 }
-
+	 
+	 
 	 void afficher_plateau(Graphics2D dessin){
 		 Image image_en_cours;
 		 int taille_case_h = (int)getSize().height/8;
 		 int taille_case_l = (int)getSize().width/16;
 		 for (int h = 0; h < 8; h++) {
 			 for (int l = h%2; l < 15; l++) {
-				 switch (jeu.getPlateau().getValeurCase(new Point(l,h))){
+				 switch (plateau.getMonplateau()[h][l]){
 					 case 1:
 						 image_en_cours = un_poisson;
 						 break;
@@ -119,7 +88,7 @@ public class Vue_Jeu extends JComponent {
 						 image_en_cours = trois_poissons;
 						 break;
 				 }
-				 if (jeu.getPlateau().getValeurCase(new Point(l,h)) != 0) {
+				 if (plateau.getMonplateau()[h][l] != 0) {
 					 dessin.drawImage(image_en_cours, l * taille_case_l, h * taille_case_h, taille_case_l *2 , taille_case_h , null);
 				 }
 			 }
@@ -131,25 +100,23 @@ public class Vue_Jeu extends JComponent {
 		 Image image_en_cours;
 		 int taille_case_h = getSize().height/8;
 		 int taille_case_l = getSize().width/16;
-		 for (Modele_Joueur j : jeu.getPlateau().getJoueurs()){
+		 for(Modele_Joueur joueur : this.plateau.getJoueurs()) {
 			 image_en_cours = pingouinImage.get(couleur);
-			 for(int compteur = 0; compteur < j.getNbPingouinPose(); compteur++){
-			 	 Modele_Pingouin p = j.getPingouins().get(compteur);
-				 int emplacementX = taille_case_l * (int) p.getCoordonees().getX();
-				 int emplacementY = taille_case_h * (int) p.getCoordonees().getY();
-				 dessin.drawImage(image_en_cours, emplacementX, emplacementY, taille_case_l * 2 , taille_case_h , null);
-			 	}
-				couleur ++;
+			 for (Modele_Pingouin px : joueur.getPingouins()) {
+				if((int) px.getCoordonees().getX()>=0) {
+					 int emplacementX = taille_case_l * (int) px.getCoordonees().getX();
+					 int emplacementY = taille_case_h * (int) px.getCoordonees().getY();
+					 dessin.drawImage(image_en_cours, emplacementX, emplacementY, taille_case_l * 2 , taille_case_h , null);
+				}
 			 }
-		 }
+			 couleur ++;
+		}
+	}
 
 	public void paintComponent(Graphics g){
-		comp ++;
-		joueur_courant = jeu.getPlateau().getJoueursIndice(comp%2);
-		//System.out.println(jeu.getPlateau().getJoueurs().size());
 		Graphics2D dessin = (Graphics2D)g;
 		afficher_plateau(dessin);
-		if(jeu.getPlateau().getJoueurs().size() > 0)
+		if(this.plateau.getJoueurs().size() > 0)
 			affiche_pingouin(dessin);
 	}
 }

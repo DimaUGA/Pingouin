@@ -1,6 +1,7 @@
 package Modele;
 
 import java.awt.*;
+import java.util.Map;
 
 public class Modele_Pingouin {
 
@@ -28,4 +29,5 @@ public class Modele_Pingouin {
         return id_pingouin;
     }
 
+    
 }

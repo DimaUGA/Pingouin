@@ -3,7 +3,6 @@ package Controleur;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import Controleur.*;
-import Modele.Modele_Jeu;
 import Vue.Vue_Jeu;
 import javax.swing.*;
 import java.lang.Object.*;
@@ -15,25 +14,35 @@ public class Controleur_Souris{
     Vue_Jeu jeuEnCours;
     boolean pingouinSelectionne;
     int departX	, departY, numPingouinCourant;
+    Modele_plateau mp;
+    int joueurcourant;
+    int nbCoup;
 
-    public Controleur_Souris(Vue_Jeu vue ){
-      jeuEnCours = vue;
+    public Controleur_Souris(Vue_Jeu vue ,Modele_plateau plateau){
+      this.jeuEnCours = vue;
+      this.mp = plateau;
       pingouinSelectionne = false;
+      this.nbCoup = 0;
+      this.joueurcourant = 0;
+      this.jeuEnCours.setPlateau(plateau);
     }
 
     void deplacementPingouin(Point p){
         //Est Accessible ne gere que diagonale basse a regler + ne prend pas en compte les cases vides
-        if(jeuEnCours.getJeu().getPlateau().Contient(p, jeuEnCours.getJeu().getPlateau().Accessible(new Point(departX, departY)))){
-            jeuEnCours.getJeu().getPlateau().Jouer_coup(jeuEnCours.getJoueurCourant(), numPingouinCourant, p);
+        if(this.mp.Contient(p, this.mp.Accessible(new Point(departX, departY)))){
+        	this.mp.Jouer_coup(this.mp.getJoueurs().get(joueurcourant), numPingouinCourant, p);
+        	jeuEnCours.setPlateau(this.mp);
             jeuEnCours.repaint();
             pingouinSelectionne = false;
+            this.nbCoup++;
+            this.joueurcourant = nbCoup%this.mp.getJoueurs().size();
         }
     }
 
     void selectionPingouin(Point p){
         //Voir comment recup indice du pingouin + verifié si joueur a cliquer sur un pgn, sinon ne rien faire
         int i;
-        if ((i = jeuEnCours.getJoueurCourant().estPingouin(p)) != -1 ){
+        if ((i = this.mp.getJoueurs().get(joueurcourant).estPingouin(p)) != -1 ){
             numPingouinCourant = i;
             departX = (int)p.getX();
             departY = (int)p.getY();
@@ -43,10 +52,12 @@ public class Controleur_Souris{
     }
 
     void posePingouinInitialisation(Point p){
-        System.out.println(jeuEnCours.getJoueurCourant().getNbPingouinPose());
-        if (jeuEnCours.getJoueurCourant().getNbPingouinPose() == 0 || jeuEnCours.getJoueurCourant().estPingouin(p) == -1)
-            jeuEnCours.getJoueurCourant().posePingouin(p);
+        System.out.println(this.mp.getJoueurs().get(joueurcourant).getNbPingouinPose());
+        if (this.mp.getJoueurs().get(joueurcourant).getNbPingouinPose() == 0 || this.mp.getJoueurs().get(joueurcourant).estPingouin(p) == -1)
+        	this.mp.getJoueurs().get(joueurcourant).posePingouin(p);
         jeuEnCours.repaint();
+        this.nbCoup++;
+        this.joueurcourant = nbCoup%this.mp.getJoueurs().size();
     }
     //lES DEUX FONCTIONS DE CALCUL DE POSITION SERONT A MODIFIER APRES IHM
     int calculPositionY (int tailleFenetre,int nombreDeCase, int positionCliqueeY){
@@ -67,7 +78,7 @@ public class Controleur_Souris{
       int coordonneeY = calculPositionY(500, 8,e.getY());
       int coordonneeX = calculPositionX(500, 16, e.getX(), coordonneeY);
       //Gestion des tours, si aucun pingouin selectionner attendre que l'utilisateur en choisisse un, deplacer celui selectionner a la position sinon
-      if (jeuEnCours.getJoueurCourant().initialisation()){
+      if (this.mp.getJoueurs().get(joueurcourant).initialisation()){
           posePingouinInitialisation(new Point(coordonneeX, coordonneeY));
       }
       else if(!pingouinSelectionne){

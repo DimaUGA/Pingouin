@@ -2,6 +2,8 @@ package Modele;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -12,7 +14,7 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
   private int colonne;
   private int ligne;
   private ArrayList<Modele_Joueur> joueurs;
-	Point p = new Point();
+  Point p = new Point();
 
 
 	public Modele_plateau(int x,int y) {
@@ -107,6 +109,14 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		return liste_voisin;
 	}
 
+	public Map<Integer,Map<String,Point>> getJoueurHashmap() {
+		Map<Integer,Map<String,Point>> tmp = new HashMap<Integer,Map<String,Point>>();
+    	for (Modele_Joueur j : joueurs) {
+			tmp.put(j.id_joueur, j.getPingouinHashmap());
+		}
+    	return tmp;
+	}
+	
 	public ArrayList<Modele_Joueur> getPosition_Joueur() {
 		return joueurs;
 	}
