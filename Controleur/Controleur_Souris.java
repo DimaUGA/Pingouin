@@ -9,7 +9,7 @@ import java.lang.Object.*;
 import java.awt.*;
 import Modele.*;
 
-public class Controleur_Souris{
+public class Controleur_Souris implements MouseListener{
 
     Vue_Jeu jeuEnCours;
     boolean pingouinSelectionne;
@@ -94,5 +94,22 @@ public class Controleur_Souris{
         deplacementPingouin(new Point(coordonneeX, coordonneeY));
       }
     }
+    
+    @Override
+	public void mouseClicked(MouseEvent mouseEvent) {}
+
+	@Override
+	public void mousePressed(MouseEvent mouseEvent) {
+		this.sourisCliquee(mouseEvent);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent mouseEvent) {}
+
+	@Override
+	public void mouseEntered(MouseEvent mouseEvent) {}
+
+	@Override
+	public void mouseExited(MouseEvent mouseEvent) {}
 
 }

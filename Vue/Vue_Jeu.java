@@ -73,7 +73,7 @@ public class Vue_Jeu extends JComponent {
 	 
 	 void afficher_plateau(Graphics2D dessin){
 		 Image image_en_cours;
-		 int taille_case_h = (int)getSize().height/8;
+		 int taille_case_h = (int)(getSize().height/8*0.96);
 		 int taille_case_l = (int)getSize().width/16;
 		 for (int h = 0; h < 8; h++) {
 			 for (int l = h%2; l < 15; l++) {
@@ -88,8 +88,14 @@ public class Vue_Jeu extends JComponent {
 						 image_en_cours = trois_poissons;
 						 break;
 				 }
-				 if (plateau.getMonplateau()[h][l] != 0) {
-					 dessin.drawImage(image_en_cours, l * taille_case_l, h * taille_case_h, taille_case_l *2 , taille_case_h , null);
+				 if(h%2==1) {
+					 if (plateau.getMonplateau()[h][l] != 0) {
+						 dessin.drawImage(image_en_cours, l * taille_case_l, h * taille_case_h, taille_case_l *2 , (int)(taille_case_h*1.35), null);
+					 }
+				 }else {
+					 if (plateau.getMonplateau()[h][l] != 0) {
+						 dessin.drawImage(image_en_cours, l * taille_case_l, h * taille_case_h, taille_case_l *2 , (int)(taille_case_h*1.35) , null);
+					 }
 				 }
 			 }
 		 }
@@ -98,15 +104,15 @@ public class Vue_Jeu extends JComponent {
 	 void affiche_pingouin(Graphics2D dessin){
 		 int couleur = 0;
 		 Image image_en_cours;
-		 int taille_case_h = getSize().height/8;
-		 int taille_case_l = getSize().width/16;
+		 int taille_case_h = (int)(getSize().height/8*0.96);
+		 int taille_case_l = (int)getSize().width/16;
 		 for(Modele_Joueur joueur : this.plateau.getJoueurs()) {
 			 image_en_cours = pingouinImage.get(couleur);
 			 for (Modele_Pingouin px : joueur.getPingouins()) {
 				if((int) px.getCoordonees().getX()>=0) {
 					 int emplacementX = taille_case_l * (int) px.getCoordonees().getX();
 					 int emplacementY = taille_case_h * (int) px.getCoordonees().getY();
-					 dessin.drawImage(image_en_cours, emplacementX, emplacementY, taille_case_l * 2 , taille_case_h , null);
+					 dessin.drawImage(image_en_cours, (int)(emplacementX+7), (int)(emplacementY+13),(int) ((taille_case_l * 2)*0.8)  ,(int)(taille_case_h*0.8) , null);
 				}
 			 }
 			 couleur ++;

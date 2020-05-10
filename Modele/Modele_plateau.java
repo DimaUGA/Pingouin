@@ -86,7 +86,11 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		monplateau[(int)coordoneesCourante.getY()][(int)coordoneesCourante.getX()] = 0;
 		joueur.deplacer_pingouin(id_pingouin,pArr);
 	}
-
+/*
+	public X simulercoupIA(Modele_Joueur joueur,plateau) {
+		return joueur.simulercoup(plateau);
+	}
+*/
 	public ArrayList<Point> Remplir_liste_voisin(ArrayList<Point> liste,Point p, int mult_x, int mult_y){
 		int x = (int)p.getX();
 		int y = (int)p.getY();
