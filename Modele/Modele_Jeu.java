@@ -1,8 +1,5 @@
 package Modele;
 
-import java.awt.*;
-import java.util.*;
-
 public class Modele_Jeu{
 
 	Modele_plateau plateau;
