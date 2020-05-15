@@ -43,7 +43,9 @@ public class Vue_Jeu_Entier {
 	}
 
 	public void ajouter_score(JPanel score) {
-		panel.add(new JButton(), "cell 0 1 1 1,grow");
+		JButton b = new JButton();
+		b.setText("ezr");
+		panel.add(b, "cell 0 0 1 1,wrap");
 	}
 
 	public void ajouter_action_joueur(Vue_Action_Joueur vaj) {
@@ -55,7 +57,7 @@ public class Vue_Jeu_Entier {
 	}
 
 	public void ajouter_regle(Vue_Regles vr) {
-		panel.add(vr, "cell 1 0 3 1,grow");
+		panel.add(vr, "cell 0 0 3 1,grow");
 	}
 
 	public JFrame getFrame() {

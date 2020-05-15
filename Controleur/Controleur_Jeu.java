@@ -34,7 +34,7 @@ public class Controleur_Jeu implements MouseInputListener {
 		
 		this.mod_plateau = mod_jeu.getPlateau();
 		this.vue_plateau = new Vue_Plateau();
-		mod_jeu.getPlateau().ajouterJoueur("albert", 01, false);
+		mod_jeu.getPlateau().ajouterJoueur("albert", 01, true);
 		mod_jeu.getPlateau().ajouterJoueur("Francis", 02, false);
 		IA = new Controleur_IA(1);
 		this.controleur_plateau = new Controleur_Plateau(vue_plateau,mod_plateau,IA);

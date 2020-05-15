@@ -43,6 +43,7 @@ public class Controleur_Plateau implements MouseListener{
 			pingouinSelectionne = false;
 			this.nbCoup++;
 			this.joueurcourant = nbCoup % this.mp.getJoueurs().size();
+			
 		}
 	}
 
