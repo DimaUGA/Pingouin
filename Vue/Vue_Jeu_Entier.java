@@ -4,9 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JPanel;
-
 import Controleur.Controleur_Jeu;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -44,8 +42,8 @@ public class Vue_Jeu_Entier {
 
 	public void ajouter_score(JPanel score) {
 		JButton b = new JButton();
-		b.setText("ezr");
-		panel.add(b, "cell 0 0 1 1,wrap");
+		b.setText("ehkzr");
+		panel.add(b, "cell 0 5 3 1,wrap");
 	}
 
 	public void ajouter_action_joueur(Vue_Action_Joueur vaj) {
