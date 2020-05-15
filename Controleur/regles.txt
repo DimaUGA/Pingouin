@@ -1,0 +1,32 @@
+But du jeu :
+    Le joueur qui a attrapé le plus de poissons gagne la partie. Pour ce faire, chaque joueur récupère le bloc de glace sur lequel se trouvait le pingouin avant son déplacement
+
+Plateau du jeu :
+    La banquise est construite de la manière suivante : 8 lignes composées alternativement de 7 et 8 blocs de banquise sur lequels sont placés des poissons ayant une valeur comprise en 1 et 3
+
+Placement des pingouins :
+    Chaque joueur prend ses pingouins en fonction du nombre de joueurs.
+         - Pour 2 joueurs, 4 pingouins chacun.
+         - Pour 3 joueurs, 3 pingouins chacun.
+         - Pour 4 joueurs, 2 pingouins chacun.
+    L’UN APRES L’AUTRE, chaque joueur place 1 de ses pingouins sur un glaçon montrant exactement 1 POISSON.
+    Quand tous les pingouins ont été posés sur des glaçons, la chasse peut commencer.
+
+Déroulement :
+    Le tour normal d’un joueur consiste à DEPLACER un de ses pingouins et à PRENDRE LE GLACON SUR LEQUEL IL SE TROUVAIT.
+
+Règles de déplacement :
+    Un pingouin se déplace AUSSI LOIN qu’il le souhaite par dessus les GLACONS INOCCUPES.
+        - Le joueur peut choisir librement la direction mais ne peut PAS TOURNER en cours de route.
+        - On ne peut PAS S’ARRETER sur des GLACONS DEJA OCCUPES par des pingouins.
+        - On ne peut PAS PASSER AU DESSUS de GLACONS OCCUPES par des pingouins (qu’ils soient à vous ou aux adversaires)
+        - On ne peut PAS PASSER AU DESSUS D’EMPLACEMENTS VIDES (dont les glaçons ont déjà été retirés)
+    Les glaçons qui ne peuvent plus être pris par aucun joueur sont RETIRES du jeu.
+
+Fin de la partie :
+    Un joueur QUI NE PEUT PLUS DEPLACER aucun de ses pingouins, à son tour, RETIRE SES PINGOUINS du
+    jeu, ainsi que les GLACONS sur lesquels ils se tenaient.
+    Les AUTRES joueurs CONTINUENT jusqu'à ce qu’eux aussi, ils ne puissent pas ne se déplacer.
+    S’il ne reste qu’un seul joueur capable de se déplacer, il continue à se déplacer aussi longtemps qu’il le peut.
+    Enfin, les joueurs COMPTENT les poissons qu'ils ont attrapés.
+    Le joueur qui possède le plus de poissons est le vainqueur.
