@@ -17,33 +17,34 @@ public class Controleur_Plateau implements MouseListener{
     Modele_plateau mp;
     int joueurcourant;
     int nbCoup;
+	Controleur_IA IA;
 
-    public Controleur_Plateau(Vue_Plateau vue ,Modele_plateau plateau){
+    public Controleur_Plateau(Vue_Plateau vue ,Modele_plateau plateau, Controleur_IA j){
       this.jeuEnCours = vue;
       this.mp = plateau;
       pingouinSelectionne = false;
       this.nbCoup = 0;
       this.joueurcourant = 0;
       this.jeuEnCours.setPlateau(plateau);
+      IA = j;
     }
 
-    void deplacementPingouin(Point p){
-        //Est Accessible ne gere que diagonale basse a regler + ne prend pas en compte les cases vides
-	    /*
-    	//if ( cest le tour de l'ia ){
-    		X = simulercoup
-    		jouercoup(ia,X.a,X.b);
-    		else()if(le truc d'en dessous
-    	*/
-    		if(this.mp.Contient(p, this.mp.Accessible(new Point(departX, departY)))){
-	        	this.mp.Jouer_coup(this.mp.getJoueurs().get(joueurcourant), numPingouinCourant, p);
-	        	jeuEnCours.setPlateau(this.mp);
-	            jeuEnCours.repaint();
-	            pingouinSelectionne = false;
-	            this.nbCoup++;
-	            this.joueurcourant = nbCoup%this.mp.getJoueurs().size();
-	        }
-    }
+    void deplacementPingouin(Point p) {
+		// Est Accessible ne gere que diagonale basse a regler + ne prend pas en compte
+		// les cases vides
+		/*
+		 * //if ( cest le tour de l'ia ){ X = simulercoup jouercoup(ia,X.a,X.b);
+		 * else()if(le truc d'en dessous
+		 */
+		if (this.mp.accessible(new Point(departX, departY), p)) {
+			this.mp.Jouer_coup(this.mp.getJoueurs().get(joueurcourant), numPingouinCourant, p);
+			jeuEnCours.setPlateau(this.mp);
+			jeuEnCours.repaint();
+			pingouinSelectionne = false;
+			this.nbCoup++;
+			this.joueurcourant = nbCoup % this.mp.getJoueurs().size();
+		}
+	}
 
     void selectionPingouin(Point p){
         //Voir comment recup indice du pingouin + verifié si joueur a cliquer sur un pgn, sinon ne rien faire
@@ -82,19 +83,26 @@ public class Controleur_Plateau implements MouseListener{
     }
 
     public void sourisCliquee(MouseEvent e) {
-      int coordonneeY = calculPositionY(jeuEnCours.getSize().height, 8,e.getY());
-      int coordonneeX = calculPositionX(jeuEnCours.getSize().width, 16, e.getX(), coordonneeY);
-      //Gestion des tours, si aucun pingouin selectionner attendre que l'utilisateur en choisisse un, deplacer celui selectionner a la position sinon
-      if (this.mp.getJoueurs().get(joueurcourant).initialisation()){
-          posePingouinInitialisation(new Point(coordonneeX, coordonneeY));
-      }
-      else if(!pingouinSelectionne){
-        selectionPingouin(new Point(coordonneeX, coordonneeY));
-      }
-      else {
-        deplacementPingouin(new Point(coordonneeX, coordonneeY));
-      }
-    }
+		int coordonneeY = calculPositionY(this.jeuEnCours.getSize().height, 8, e.getY());
+		int coordonneeX = calculPositionX(this.jeuEnCours.getSize().width, 16, e.getX(), coordonneeY);
+		// Gestion des tours, si aucun pingouin selectionner attendre que l'utilisateur
+		// en choisisse un, deplacer celui selectionner a la position sinon
+		if (this.mp.getJoueurs().get(joueurcourant).initialisation()) {
+			posePingouinInitialisation(new Point(coordonneeX, coordonneeY));
+		} else if (!pingouinSelectionne) {
+			selectionPingouin(new Point(coordonneeX, coordonneeY));
+		} else {
+			deplacementPingouin(new Point(coordonneeX, coordonneeY));
+		}
+		if (!pingouinSelectionne) {
+			Modele_Coup coup = IA.joueIA(mp);
+			if (this.mp.getJoueurs().get(joueurcourant).initialisation()) mp.getJoueursIndice(IA.IA).posePingouin(coup.getPoint());
+			else mp.Jouer_coup(mp.getJoueursIndice(joueurcourant), coup.getPingouin(), coup.getPoint());
+			jeuEnCours.repaint();
+			nbCoup++;
+			this.joueurcourant = nbCoup % this.mp.getJoueurs().size();
+		}
+	}
    @Override
 	public void mousePressed(MouseEvent mouseEvent) {
 		this.sourisCliquee(mouseEvent);

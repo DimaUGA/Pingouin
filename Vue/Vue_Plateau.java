@@ -96,7 +96,7 @@ public class Vue_Plateau extends JPanel {
 		 Image image_en_cours;
 		 int taille_case_h = (int)(getSize().height/8*0.96);
 		 int taille_case_l = (int)getSize().width/16;
-		 for(Modele_Joueur joueur : this.plateau.getJoueurs()) {
+		 for(Modele_Joueur_abs joueur : this.plateau.getJoueurs()) {
 			 image_en_cours = pingouinImage.get(couleur);
 			 for (Modele_Pingouin px : joueur.getPingouins()) {
 				if((int) px.getCoordonees().getX()>=0) {

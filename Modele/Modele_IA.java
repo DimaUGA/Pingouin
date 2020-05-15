@@ -1,13 +1,21 @@
 package Modele;
 
-public class Modele_IA extends Modele_Joueur_abs{
+import java.awt.Point;
+import java.util.Random;
 
-    public Modele_IA(String nom, int id){
+public class Modele_IA extends Modele_Joueur_abs {
+	Random moduleRandom;
+	
+    public Modele_IA(String nom, int id) {
         super(nom,id);
+        moduleRandom = new Random();
     }
-/*
-    public X simulercoup(Modele_plateau plateau) {
-    	return 
+
+    public Point jouerCoup(int tailleMAXX, int tailleMAXY) {
+        return new Point(moduleRandom.nextInt(tailleMAXX), moduleRandom.nextInt(tailleMAXY));
     }
-*/
+
+    public int recupNumPingouin(int nb){
+        return moduleRandom.nextInt(nb);
+    }
 }

@@ -26,16 +26,18 @@ public class Controleur_Jeu implements MouseInputListener {
 	private Controleur_Historique controleur_historique;
 	private Vue_Regles vue_regles;
 	private Controleur_Regles controleur_regles;
-
+	private Controleur_IA IA;
+	
 	public Controleur_Jeu(Modele_Jeu mj, Vue_Jeu_Entier vj) {
 		this.mod_jeu = mj;
 		this.vue_jeu = vj;
 		
 		this.mod_plateau = mod_jeu.getPlateau();
 		this.vue_plateau = new Vue_Plateau();
-		this.mod_plateau.ajouterJoueur("albert", 01);
-		this.mod_plateau.ajouterJoueur("Francis", 02);
-		this.controleur_plateau = new Controleur_Plateau(vue_plateau,mod_plateau);
+		mod_jeu.getPlateau().ajouterJoueur("albert", 01, false);
+		mod_jeu.getPlateau().ajouterJoueur("Francis", 02, false);
+		IA = new Controleur_IA(1);
+		this.controleur_plateau = new Controleur_Plateau(vue_plateau,mod_plateau,IA);
 		vue_plateau.ajouterListener(controleur_plateau);
 		
 		this.vue_action_joueur = new Vue_Action_Joueur();
