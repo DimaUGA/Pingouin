@@ -2,26 +2,37 @@ package Controleur;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Controleur_Vue_Jeu extends JFrame {
 
     JPanel pan = new JPanel();
-    int X, Y;
+    int X, Y, page_courante;
     char lieu;
-    boolean taille;
+    ArrayList<String> listejoueur = new ArrayList<>();
+    JComboBox<String> joueur1, joueur2,  joueur3, joueur4;
+    JButton ajouter_j3, ajouter_j4, retirer_j3, retirer_j4, bouton_precedent, bouton_suivant;
+    JLabel page_1, page_2, page_3, page_4, page_5, page_6, page_7, page_8, page_9, page_10;
 
-    JComboBox<String> joueur3, joueur4;
 
-    JButton ajouter_j3, ajouter_j4, retirer_j3, retirer_j4;
+
+    public Controleur_Vue_Jeu() {
+        this.setTitle("PINGOUINS");
+        this.setSize(400, 500);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+
+        getTaille_Fenetre();
+        Acceuil();
+        this.setContentPane(pan);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
 
     public void setPan(){
         pan = new JPanel();
         pan.setLayout(null);
-        //pan.setLayout(new FlowLayout());
-        pan.setBackground(Color.CYAN);
     }
 
     public void finaliserPan(){
@@ -29,22 +40,37 @@ public class Controleur_Vue_Jeu extends JFrame {
         this.setVisible(true);
     }
 
-    public Controleur_Vue_Jeu() {
-        this.setTitle("HEY! That's my fish!");
-        this.setSize(400, 500);
-        this.setLocationRelativeTo(null);
-
-        refreshValue();
-        Acceuil();
-        this.setContentPane(pan);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
-    }
-
-    public void refreshValue(){
+    public void getTaille_Fenetre(){
         X = this.getSize().width;
         Y = this.getSize().height;
-        taille = true;
+    }
+
+    private JButton Ajouter_Bouton(int x, int y, int largeur, int hauteur, String chemin_image){
+
+        ImageIcon icone = new ImageIcon(chemin_image);
+        Image image = icone.getImage();
+        image = image.getScaledInstance(largeur,hauteur,java.awt.Image.SCALE_SMOOTH);
+        icone = new ImageIcon(image);
+
+        JButton bouton = new JButton(icone);
+        bouton.setBounds(x,y,largeur,hauteur);
+        setBoutonTransparent(bouton);
+
+        return bouton;
+    }
+
+    private JLabel Ajouter_Label(int x, int y, int largeur, int hauteur, String chemin_image, boolean visible){
+
+        ImageIcon icone = new ImageIcon(chemin_image);
+        Image image = icone.getImage();
+        image = image.getScaledInstance(largeur,hauteur,java.awt.Image.SCALE_SMOOTH);
+        icone = new ImageIcon(image);
+
+        JLabel label = new JLabel();
+        label.setBounds(x,y,largeur,hauteur);
+        label.setIcon(icone);
+        label.setVisible(visible);
+        return label;
     }
 
     public char getLieu() {
@@ -82,101 +108,138 @@ public class Controleur_Vue_Jeu extends JFrame {
         }
     }
 
-    public Boolean getTaille() {
-        return taille;
+    private void setArrierePlan(){
+
+        ImageIcon image_arriere_plan = new ImageIcon("src/ImagesBoutons/ARRIERE_PLAN.png");
+        Image image4 = image_arriere_plan.getImage();
+        image4 = image4.getScaledInstance(400,500,java.awt.Image.SCALE_SMOOTH);
+        image_arriere_plan = new ImageIcon(image4);
+
+        JLabel arriere_plan = new JLabel();
+        arriere_plan.setIcon(image_arriere_plan);
+        arriere_plan.setBounds(0,0,400,500);
+        pan.add(arriere_plan);
+    }
+
+    private void setBoutonTransparent(JButton bouton){
+        bouton.setOpaque(false);
+        bouton.setContentAreaFilled(false);
+        bouton.setBorderPainted(false);
+    }
+
+    public ArrayList<String> getListejoueur() {
+        return listejoueur;
     }
 
     public void Acceuil() {
+
         setPan();
         lieu = 'a';
-        taille = false;
-        JButton bouton = new JButton("JOUER");
-        JButton bouton2 = new JButton("REGLES");
-        JTextArea titre = new JTextArea("HEY! That's my fish !");
-        //refreshValue();
-        titre.setSize(115,25);
-        bouton.setBounds(3*X/8 , (int) (Y*0.4 - 20) , X/4, Y/10);
-        bouton.addActionListener(new Controleur_B_JOUEZ(this));
-        bouton2.setBounds(3*X/8, (int) (Y*0.5 + 20) , X/4, Y/10);
-        bouton2.addActionListener(new Controleur_B_REGLES(this));
-        pan.add(bouton);
-        pan.add(bouton2);
-        pan.add(titre, BorderLayout.CENTER);
-        pan.addComponentListener(new Controleur_Taille_Fenetre(this));
+
+        ImageIcon icone_titre = new ImageIcon("src/ImagesBoutons/TITRE.png");
+        Image image_titre = icone_titre.getImage();
+        image_titre = image_titre.getScaledInstance(3 * X / 4,(int) (Y * 0.20),java.awt.Image.SCALE_SMOOTH);
+        icone_titre = new ImageIcon(image_titre);
+
+        JLabel titre = new JLabel();
+        titre.setIcon(icone_titre);
+        titre.setBounds((X/8)-5 , (int) (Y*0.4)-150 , 3 * X / 4,(int) (Y * 0.25));
+
+
+        JButton bouton_retour = Ajouter_Bouton((X/8)-5,(int)(Y*0.4 - 20)+50,3 * X / 4,(int) (Y * 0.13)
+                ,"src/ImagesBoutons/JOUER.png");
+        JButton bouton_regles = Ajouter_Bouton((X/8)-5, (int) (Y*0.5 + 20)+50, 3 * X / 4,(int)(Y * 0.13)
+                ,"src/ImagesBoutons/REGLES.png");
+
+        bouton_retour.addActionListener(new Controleur_B_JOUEZ(this));
+        bouton_regles.addActionListener(new Controleur_B_REGLES(this));
+
+        pan.add(bouton_retour);
+        pan.add(bouton_regles);
+        pan.add(titre);
+
+        setArrierePlan();
         finaliserPan();
     }
 
     public void Regles(){
         setPan();
         lieu = 'r';
-        taille = false;
-        JButton bouton = new JButton("RETOUR");
-        JTextArea texte = new JTextArea();
-        texte.setWrapStyleWord(true);
-        texte.setLineWrap(true);
-        texte.setPreferredSize(new Dimension(4, 970));
-        String chaine = "";
-        try {
-            InputStream stream = new FileInputStream("src/Controleur/regles.txt");
-            Scanner scanner = new Scanner(stream);
-            chaine = remplirChaine(scanner);
-        }
-        catch (Exception e){
-            System.err.println(e);
-        }
-        texte.append(chaine);
-        texte.setEditable(false);
-        JScrollPane regles = new JScrollPane(texte);
-        //refreshValue();
+        page_courante = 1;
 
-        bouton.setBounds((int)(X*0.375), (int)(0.76*Y), X/4, Y/10);
-        bouton.addActionListener(new Controleur_B_RETOUR(this));
+        page_1 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_1.png", true);
+        page_2 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_2.png", false);
+        page_3 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_3.png", false);
+        page_4 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_4.png", false);
+        page_5 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_5.png", false);
+        page_6 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_6.png", false);
+        page_7 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_7.png", false);
+        page_8 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_8.png", false);
+        page_9 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_9.png", false);
+        page_10 = Ajouter_Label(43, 10, 300, 350, "src/ImagesBoutons/PAGE_10.png", false);
 
-        regles.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        //regles.setBackground(Color.RED);
-        regles.setBounds((int)(X*0.1125),(int)(Y * 0.004),3 * X / 4,3 * Y / 5);
-        //regles.getVerticalScrollBar().setValue(regles.getVerticalScrollBar().getMaximum());
+        JButton bouton_retour = Ajouter_Bouton((X/8)-5,(int) (Y*0.5 + 20)+110, 3 * X / 4,(int) (Y * 0.13)
+                ,"src/ImagesBoutons/RETOUR.png");
+        bouton_precedent = Ajouter_Bouton(15,170,14,45
+                ,"src/ImagesBoutons/PRECEDENT.png");
+        bouton_suivant = Ajouter_Bouton(355,170,14,45
+                ,"src/ImagesBoutons/SUIVANT.png");
 
-        pan.add(regles);
-        pan.add(bouton);
-        pan.addComponentListener(new Controleur_Taille_Fenetre(this));
+        bouton_precedent.setVisible(false);
+
+        bouton_retour.addActionListener(new Controleur_B_RETOUR(this));
+        bouton_precedent.addActionListener(new Controleur_Precedent(this));
+        bouton_suivant.addActionListener(new Controleur_Suivant(this));
+
+        pan.add(page_1);
+        pan.add(page_2);
+        pan.add(page_3);
+        pan.add(page_4);
+        pan.add(page_5);
+        pan.add(page_6);
+        pan.add(page_7);
+        pan.add(page_8);
+        pan.add(page_9);
+        pan.add(page_10);
+        pan.add(bouton_retour);
+        pan.add(bouton_precedent);
+        pan.add(bouton_suivant);
+
+        setArrierePlan();
         finaliserPan();
     }
 
     public void Jouez(){
         setPan();
         lieu = 'j';
-        taille = false;
 
-        JButton boutonNouvellePartie = new JButton("NOUVELLE PARTIE");
-        JButton boutonCharger = new JButton("CHARGER");
-        JButton boutonRetourAcceuil = new JButton("RETOUR");
+        JButton boutonNouvellePartie = Ajouter_Bouton((int)(X*0.1125),(int)(Y * 0.2),3 * X / 4,(int) (Y * 0.13)
+                ,"src/ImagesBoutons/NOUVELLE_PARTIE.png");
+        JButton boutonCharger = Ajouter_Bouton((int)(X*0.1125),(int)(Y * 0.43),3 * X / 4,(int) (Y * 0.13)
+                ,"src/ImagesBoutons/CHARGER.png");
+        JButton boutonRetourAcceuil = Ajouter_Bouton((int)(X*0.1125),(int)(Y * 0.66),3 * X / 4,(int) (Y * 0.13)
+                ,"src/ImagesBoutons/RETOUR.png");
 
         //refreshValue();
 
         boutonNouvellePartie.addActionListener(new Controleur_Nouvelle_Partie(this));
-        boutonNouvellePartie.setBounds((int)(X*0.1125),(int)(Y * 0.2),3 * X / 4,(int) (Y * 0.13));
-
         boutonCharger.addActionListener(new Controleur_B_RETOUR(this));
-        boutonCharger.setBounds((int)(X*0.1125),(int)(Y * 0.43),3 * X / 4,(int) (Y * 0.13));
-
         boutonRetourAcceuil.addActionListener(new Controleur_B_RETOUR(this));
-        boutonRetourAcceuil.setBounds((int)(X*0.1125),(int)(Y * 0.66),3 * X / 4,(int) (Y * 0.13));
 
         pan.add(boutonNouvellePartie);
         pan.add(boutonCharger);
         pan.add(boutonRetourAcceuil);
-        pan.addComponentListener(new Controleur_Taille_Fenetre(this));
+
+        setArrierePlan();
         finaliserPan();
     }
 
     public void NouvellePartie(){
         setPan();
         lieu = 'n';
-        taille = false;
 
-        JComboBox<String> joueur1 = creerComboBox(1);
-        JComboBox<String> joueur2 = creerComboBox(2);
+        joueur1 = creerComboBox(1);
+        joueur2 = creerComboBox(2);
         joueur3 = creerComboBox(3);
         joueur4 = creerComboBox(4);
 
@@ -186,22 +249,30 @@ public class Controleur_Vue_Jeu extends JFrame {
         joueur3.setVisible(false);
         joueur4.setVisible(false);
 
-        ajouter_j3 = new JButton("Ajouter J3");
-        ajouter_j4 = new JButton("Ajouter J4");
-        retirer_j3 = new JButton("Supprimer J3");
-        retirer_j4 = new JButton("Supprimer J4");
 
+        ajouter_j3 = Ajouter_Bouton((int)(X*0.1125),(int)(Y * 0.2 + (2 * Y * 0.17) ),3 * X / 4,(int) (Y * 0.125)
+                ,"src/ImagesBoutons/AJOUTER_J3.png");
+        ajouter_j4 = Ajouter_Bouton((int)(X*0.1125),(int)(Y * 0.2 + (3 * Y * 0.17) ),3 * X / 4,(int) (Y * 0.125)
+                ,"src/ImagesBoutons/AJOUTER_J4.png");
+        retirer_j3 = Ajouter_Bouton((int)(X*0.6000),(int)(Y * 0.2 + (2 * Y * 0.17) ), (X / 4) + 20,(int) (Y * 0.125)
+                ,"src/ImagesBoutons/RETIRER_J3.png");
+        retirer_j4 = Ajouter_Bouton((int)(X*0.6000),(int)(Y * 0.2 + (3 * Y * 0.17) ), (X / 4) + 20,(int) (Y * 0.125)
+                ,"src/ImagesBoutons/RETIRER_J4.png");
 
-        ajouter_j3.setBounds((int)(X*0.1125),(int)(Y * 0.2 + (2 * Y * 0.17) ),3 * X / 4,(int) (Y * 0.125));
-        ajouter_j4.setBounds((int)(X*0.1125),(int)(Y * 0.2 + (3 * Y * 0.17) ),3 * X / 4,(int) (Y * 0.125));
-        retirer_j3.setBounds((int)(X*0.6000),(int)(Y * 0.2 + (2 * Y * 0.17) ), (X / 4) + 20,(int) (Y * 0.125));
-        retirer_j4.setBounds((int)(X*0.6000),(int)(Y * 0.2 + (3 * Y * 0.17) ), (X / 4) + 20,(int) (Y * 0.125));
+        JButton boutonRetour = Ajouter_Bouton(0,0,(int)(X*0.15), (int)(Y*0.1)
+                ,"src/ImagesBoutons/RETOUR_2.png");
+        JButton boutonJouer = Ajouter_Bouton((int)((X-(X*.15))-15),0,(int)(X*.15),(int)(Y*0.1)
+                ,"src/ImagesBoutons/JOUER_2.png");
+
         retirer_j3.setVisible(false);
         retirer_j4.setVisible(false);
+
         ajouter_j3.addActionListener(new Controleur_Ajouter_J3(this));
         ajouter_j4.addActionListener(new Controleur_Ajouter_J4(this));
         retirer_j3.addActionListener(new Controleur_Retirer_J3(this));
         retirer_j4.addActionListener(new Controleur_Retirer_J4(this));
+        boutonRetour.addActionListener(new Controleur_B_RETOUR(this));
+        boutonJouer.addActionListener(new Controleur_GO(this));
 
         pan.add(joueur1);
         pan.add(joueur2);
@@ -211,23 +282,26 @@ public class Controleur_Vue_Jeu extends JFrame {
         pan.add(ajouter_j4);
         pan.add(retirer_j3);
         pan.add(retirer_j4);
-
-        JButton boutonRetour = new JButton("<");
-        boutonRetour.addActionListener(new Controleur_B_RETOUR(this));
-        boutonRetour.setBounds(0,0,(int)(X*0.15), (int)(Y*0.1));
         pan.add(boutonRetour);
-
-        JButton boutonJouer = new JButton("GO");
-        boutonJouer.setBounds((int)((X-(X*.15))-15),0,(int)(X*.15),(int)(Y*0.1));
-        boutonJouer.addActionListener(new Controleur_GO());
         pan.add(boutonJouer);
 
-        pan.addComponentListener(new Controleur_Taille_Fenetre(this));
-
+        setArrierePlan();
         finaliserPan();
     }
 
+    public void remplitArray(){
+        listejoueur.add(joueur1.getSelectedItem().toString());
+        listejoueur.add(joueur2.getSelectedItem().toString());
+        if (joueur3.getSelectedItem().toString() != "---"){
+            listejoueur.add(joueur3.getSelectedItem().toString());
+            if(joueur4.getSelectedItem().toString() != "---") {
+                listejoueur.add(joueur4.getSelectedItem().toString());
+            }
+        }
+    }
+
     public JComboBox<String> creerComboBox(int numero){
+
         JComboBox<String> joueur1 = new JComboBox<String>();
         joueur1.setEditable(true);
         joueur1.addItem("Choisir nom joueur");
@@ -236,16 +310,9 @@ public class Controleur_Vue_Jeu extends JFrame {
         joueur1.addItem("IA Difficile");
         joueur1.addItem("---");
         joueur1.addActionListener(new Controleur_ComboBox(joueur1));
-        //joueur1.setBounds((int)(X*0.1125),(int)(Y * 0.2 + ((numero - 1) * Y * 0.17) ),3 * X / 4,(int) (Y * 0.125));
         joueur1.setBounds((int)(X*0.1500)-25,(int)(Y * 0.2 + ((numero - 1) * Y * 0.17) ),2 * X / 4,(int) (Y * 0.125));
+        joueur1.setBackground(Color.decode("#3ec0d6"));
         return joueur1;
-    }
-
-    public String remplirChaine (Scanner s){
-        String temp = "";
-        while (s.hasNextLine())
-            temp += s.nextLine() + "\n";
-        return temp;
     }
 
 }

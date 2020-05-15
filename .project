@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Pingouin</name>
+	<name>dsfgfdsgfdsg</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Modele/Modele_Coup.java</name>
-			<type>1</type>
-			<location>B:/Sevket/Telechargement/PingouinIAAlea/Modele/Modele_Coup.java</location>
-		</link>
-	</linkedResources>
 </projectDescription>

@@ -12,8 +12,8 @@ public class Controleur_Taille_Fenetre implements ComponentListener {
     }
 
     public void componentResized(ComponentEvent e) {
-        b.refreshValue();
-        /*if (b.getLieu()=='a' && b.getTaille()){
+       /* b.refreshValue();
+        if (b.getLieu()=='a' && b.getTaille()){
             b.Acceuil();
         }
         else if (b.getLieu()=='r' && b.getTaille()){

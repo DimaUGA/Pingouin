@@ -2,15 +2,19 @@ package Modele;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 
-public class Modele_plateau /*extends AbstractTableModel*/ {
+public class Modele_plateau {
 	private int[][] monplateau;
 	private Random mod_alea = new Random();
 	private int colonne;
  	private int ligne;
 	private ArrayList<Modele_Joueur_abs> joueurs;
+	private ArrayList<Modele_Joueur_abs> rotation;
 	Point p = new Point();
 
 	public Modele_plateau(int x,int y) {
@@ -19,6 +23,7 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		this.colonne=y;
 		this.ligne=x;
 		joueurs = new ArrayList<>();
+		rotation = new ArrayList<>();
 	}
 
 	public void tracer_plateau() { //Creer le tableau de jeu de maniere aleatoire
@@ -60,38 +65,38 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		for (Modele_Joueur_abs j : liste) {
 			for (Modele_Pingouin pingouins : j.getPingouins()) {
 				System.out.println("Dans la fonction contient pingouin");
-				System.out.println(pingouins.getCoordonees().getX() + " " + pingouins.getCoordonees().getY() + " point à comparer : " + p.getX() + " " + p.getY());
+				System.out.println(pingouins.getCoordonees().getX() + " " + pingouins.getCoordonees().getY() + " point ï¿½ comparer : " + p.getX() + " " + p.getY());
 				if (pingouins.getCoordonees().getX() == p.getX() && pingouins.getCoordonees().getY() == p.getY())
 					return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean accessible(Point dep, Point ar) {
-		//on vérifie déjà si le point est sur une diagonale ou sur une ligne depuis la position du pingouin, dans ce cas c'est inutile de regarder les autres cases
-		if (!Est_accessible(dep, ar)) 
+		//on vï¿½rifie dï¿½jï¿½ si le point est sur une diagonale ou sur une ligne depuis la position du pingouin, dans ce cas c'est inutile de regarder les autres cases
+		if (!Est_accessible(dep, ar))
 			return false;
 		int xDep = (int)dep.getX();
 		int yDep = (int)dep.getY();
 		int xAr = (int)ar.getX();
 		int yAr = (int)ar.getY();
-		//Le cas où le pingouin veut se déplacer sur une ligne
+		//Le cas oï¿½ le pingouin veut se dï¿½placer sur une ligne
 		if (dep.getY()-ar.getY() == 0) {
-			for (int i = 2; xDep+i < xAr || xDep-i > xAr; i += 2) { 
-				System.out.println("Je suis rentrée dans le for 1");
+			for (int i = 2; xDep+i < xAr || xDep-i > xAr; i += 2) {
+				System.out.println("Je suis rentrï¿½e dans le for 1");
 				System.out.println(dep.getX() + " " + dep.getY());
-				if (xDep+i < xAr && !Est_accessible(dep, new Point(xDep+i, yDep)) || xDep-i > xAr && !Est_accessible(dep, new Point(xDep-i, yDep))) 
+				if (xDep+i < xAr && !Est_accessible(dep, new Point(xDep+i, yDep)) || xDep-i > xAr && !Est_accessible(dep, new Point(xDep-i, yDep)))
 					return false;
 			}
 		}
-		//Le cas où le pingouin veut se déplacer sur une des 4 diagonales
-		for (int i = 1; xDep+i < xAr && yDep+i < yAr || xDep+i < xAr && yDep-i > yAr || xDep-i > xAr && yDep+i < yAr || xDep-i > xAr && yDep-i > yAr; i ++) { 
-			System.out.println("Je suis rentrée dans le for 2");
+		//Le cas oï¿½ le pingouin veut se dï¿½placer sur une des 4 diagonales
+		for (int i = 1; xDep+i < xAr && yDep+i < yAr || xDep+i < xAr && yDep-i > yAr || xDep-i > xAr && yDep+i < yAr || xDep-i > xAr && yDep-i > yAr; i ++) {
+			System.out.println("Je suis rentrï¿½e dans le for 2");
 			System.out.println(dep.getX() + " " + dep.getY());
-			if (xDep+i < xAr && yDep+i < yAr && !Est_accessible(dep, new Point(xDep+i, yDep+i)) || xDep+i < xAr && yDep-i > yAr && !Est_accessible(dep, new Point(xDep+i, yDep-i)) 
-					|| xDep-i > xAr && yDep+i < yAr && !Est_accessible(dep, new Point(xDep-i, yDep+i)) 
-					|| xDep-i > xAr && yDep-i > yAr && !Est_accessible(dep, new Point(xDep-i, yDep-i))) 
+			if (xDep+i < xAr && yDep+i < yAr && !Est_accessible(dep, new Point(xDep+i, yDep+i)) || xDep+i < xAr && yDep-i > yAr && !Est_accessible(dep, new Point(xDep+i, yDep-i))
+					|| xDep-i > xAr && yDep+i < yAr && !Est_accessible(dep, new Point(xDep-i, yDep+i))
+					|| xDep-i > xAr && yDep-i > yAr && !Est_accessible(dep, new Point(xDep-i, yDep-i)))
 				return false;
 		}
 		return true;
@@ -134,14 +139,25 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		liste_voisin = Remplir_liste_voisin(liste_voisin,p,2,0);
 		return liste_voisin;
 	}
-	
+
 	public void Jouer_coup(Modele_Joueur_abs joueur, int id_pingouin, Point pArr) { // A coder apres la classe Joueur
 		Point coordoneeCourante = joueur.getPingouin(id_pingouin).getCoordonees();
 		joueur.ajout_score(getValeurCase(coordoneeCourante));
 		monplateau[(int)coordoneeCourante.getY()][(int)coordoneeCourante.getX()] = 0;
 		joueur.deplacer_pingouin(id_pingouin,pArr);
 	}
-	
+
+	public Map<String,Integer> getScoreJoueur(){
+		HashMap<String,Integer> scoreJoueur = new HashMap<String, Integer>();
+		for (Modele_Joueur_abs j : joueurs) {
+			scoreJoueur.put(j.getNom_joueur(), j.getScore());
+		}
+
+		//ICI ON A LA POSSIBILITï¿½ DE TRIER LE HASHMAP 5 (faut dev la fonction)
+
+		return scoreJoueur;
+	}
+
 	public ArrayList<Modele_Joueur_abs> getPosition_Joueur() {
 		return joueurs;
 	}
@@ -177,9 +193,29 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 	public void ajouterJoueur(String nom, int ID, boolean modeIA){
 		if (modeIA)
 			joueurs.add(new Modele_IA(nom, ID));
-		else 
+		else
 			joueurs.add(new Modele_Joueur(nom, ID));
 	}
+
+
+		public boolean finDePartie(){
+			return rotation.size() == 0;
+		}
+
+		public void gestionRotationJoueurs(){
+			Iterator<Modele_Joueur_abs> temp = rotation.iterator();
+			for(Modele_Joueur_abs joueurCourant = temp.next(); temp.hasNext(); joueurCourant = temp.next()){
+				boolean bloque = true;
+				for(Modele_Pingouin p : joueurCourant.getPingouins()) {
+					if (Accessible(p.getCoordonees()).size() != 0){
+						bloque = false;
+						break;
+					}
+				}
+				if(bloque)
+					temp.remove();
+			}
+		}
 
 	public Modele_Joueur_abs getJoueursIndice(int pos){
 		return joueurs.get(pos);

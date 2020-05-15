@@ -1,10 +1,7 @@
 package Controleur;
 
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.event.MouseInputListener;
-
 import Modele.Modele_Jeu;
 import Modele.Modele_plateau;
 import Vue.Vue_Action_Joueur;
@@ -62,13 +59,16 @@ public class Controleur_Jeu implements MouseInputListener {
 		this.vue_jeu.ajouter_action_joueur(this.controleur_action_joueur.getVueBoutons());
 		this.vue_jeu.ajouter_historique(this.controleur_historique.getVue_Histo());
 		this.vue_jeu.ajouter_regle(this.controleur_regles.getRegles());
+		this.vue_jeu.ajouter_score(this.controleur_plateau.getScoreJoueur());
 	}
 
 
 	private void updateFenetre() {
 		this.setTourJoueur(this.controleur_plateau.getNomJoueurCourant());
+		this.vue_jeu.updateScore(this.controleur_plateau.getScoreJoueur());
 		
 	}
+
 	private void setTourJoueur(String nomJoueurCourant) {
 		this.controleur_regles.getRegles().getLabelNom().setText(nomJoueurCourant);		
 	}
@@ -114,7 +114,6 @@ public class Controleur_Jeu implements MouseInputListener {
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		this.updateFenetre();
-		System.out.println("kjsbfq");
 		
 	}
 
