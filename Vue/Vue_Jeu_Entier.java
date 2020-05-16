@@ -1,14 +1,20 @@
 package Vue;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import Controleur.Controleur_Jeu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.Map;
+import java.awt.FlowLayout;
 
 public class Vue_Jeu_Entier {
 
@@ -20,6 +26,7 @@ public class Vue_Jeu_Entier {
 	JPanel panel_4 = new JPanel();
 	JPanel panel_1 = new JPanel();
 	JPanel panel = new JPanel();
+	static DefaultTableModel model = new DefaultTableModel(new Object[] { "Key", "Value" }, 0);
 
 	public Vue_Jeu_Entier() {
 		initialize();
@@ -28,11 +35,10 @@ public class Vue_Jeu_Entier {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBackground(Color.DARK_GRAY);
-		frame.setBounds(0, 0, 1500, 1000);
+		frame.setBounds(0, 0, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		panel.setBackground(Color.DARK_GRAY);
-
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[][grow][][][][grow][][grow]", "[grow][][][grow][grow]"));
 
@@ -42,10 +48,11 @@ public class Vue_Jeu_Entier {
 		panel.add(vue_Plateau, "cell 3 2 5 3,grow");
 	}
 
-	public void ajouter_score(JPanel score) {
-		JButton b = new JButton();
-		b.setText("ezr");
-		panel.add(b, "cell 0 0 1 1,wrap");
+	public void ajouter_score(Map<String, Integer> score) {
+		/*
+		 * JPanel j = new JPanel(); j.add(new JLabel()); j.add(new JLabel());
+		 * panel.add(, "cell 0 1 1 1,grow");
+		 */
 	}
 
 	public void ajouter_action_joueur(Vue_Action_Joueur vaj) {
@@ -78,4 +85,8 @@ public class Vue_Jeu_Entier {
 
 	}
 
+	public void updateScore(Map<String, Integer> scoreJoueur) {
+		panel.remove(4);
+		scoreJoueur.forEach((key, value) -> System.out.println("Key : " + key + " Value : " + value));
+	}
 }

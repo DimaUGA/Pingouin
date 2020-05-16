@@ -2,10 +2,15 @@ package Modele;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
-public class Modele_plateau /*extends AbstractTableModel*/ {
+public class Modele_plateau {
 	private int[][] monplateau;
 	private Random mod_alea = new Random();
 	private int colonne;
@@ -59,8 +64,8 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 	public boolean ContientPingouin(Point p, ArrayList<Modele_Joueur_abs> liste) {
 		for (Modele_Joueur_abs j : liste) {
 			for (Modele_Pingouin pingouins : j.getPingouins()) {
-				System.out.println("Dans la fonction contient pingouin");
-				System.out.println(pingouins.getCoordonees().getX() + " " + pingouins.getCoordonees().getY() + " point à comparer : " + p.getX() + " " + p.getY());
+				//System.out.println("Dans la fonction contient pingouin");
+				//System.out.println(pingouins.getCoordonees().getX() + " " + pingouins.getCoordonees().getY() + " point à comparer : " + p.getX() + " " + p.getY());
 				if (pingouins.getCoordonees().getX() == p.getX() && pingouins.getCoordonees().getY() == p.getY())
 					return true;
 			}
@@ -79,8 +84,8 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		//Le cas où le pingouin veut se déplacer sur une ligne
 		if (dep.getY()-ar.getY() == 0) {
 			for (int i = 2; xDep+i < xAr || xDep-i > xAr; i += 2) { 
-				System.out.println("Je suis rentrée dans le for 1");
-				System.out.println(dep.getX() + " " + dep.getY());
+				//System.out.println("Je suis rentrée dans le for 1");
+				//System.out.println(dep.getX() + " " + dep.getY());
 				if (xDep+i < xAr && !Est_accessible(dep, new Point(xDep+i, yDep)) || xDep-i > xAr && !Est_accessible(dep, new Point(xDep-i, yDep))) 
 					return false;
 			}
@@ -140,6 +145,17 @@ public class Modele_plateau /*extends AbstractTableModel*/ {
 		joueur.ajout_score(getValeurCase(coordoneeCourante));
 		monplateau[(int)coordoneeCourante.getY()][(int)coordoneeCourante.getX()] = 0;
 		joueur.deplacer_pingouin(id_pingouin,pArr);
+	}
+	
+	public Map<String,Integer> getScoreJoueur(){
+		HashMap<String,Integer> scoreJoueur = new HashMap<String, Integer>();
+		for (Modele_Joueur_abs j : joueurs) {
+			scoreJoueur.put(j.getNom_joueur(), j.getScore());
+		}
+		
+		//ICI ON A LA POSSIBILITÉ DE TRIER LE HASHMAP 5 (faut dev la fonction) 
+		
+		return scoreJoueur;
 	}
 	
 	public ArrayList<Modele_Joueur_abs> getPosition_Joueur() {
