@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Controleur_Fenetre_Acceuil extends JComponent {
-    int X,Y;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2827705133758228991L;
+	int X,Y;
     Controleur_Vue_Jeu cvj;
     public Controleur_Fenetre_Acceuil(Controleur_Vue_Jeu cvj){
         Acceuil();

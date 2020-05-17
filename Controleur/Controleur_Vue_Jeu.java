@@ -8,7 +8,11 @@ import java.util.Scanner;
 
 public class Controleur_Vue_Jeu extends JFrame {
 
-    JPanel pan = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6549791221928895502L;
+	JPanel pan = new JPanel();
     int X, Y;
     char lieu;
     boolean taille;
